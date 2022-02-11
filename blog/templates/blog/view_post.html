@@ -1,0 +1,33 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header px-4 p-3 ">
+        Категория: <a href="{{ post.category.get_absolute_url }}"
+                      style="text-decoration: none; color:black; font-weight: bold">
+        {{ post.category }}</a>
+    </div>
+    <div class="card-body">
+        <div class="media">
+            {% if news.photo %}
+            <img src="{{ post.photo.url }}" alt="" width="350" class="mr-3">
+
+            {% endif %}
+            <div class="media-body">
+                <h5 class="card-title">{{ post.title }}</h5>
+                <p class="card-text">{{ post.content|safe|linebreaks }}</p>
+            </div>
+        </div>
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button type="button" class="btn btn-danger me-md-2">Удалить</button>
+            <button type="button" class="btn btn-secondary">Изменить</button>
+        </div>
+    </div>
+    <div class="card-footer text-muted d-flex justify-content-between">
+            {{ post.created_at|date:"Y-m-d H:i" }}
+            <p class="fst-italic">Кол-просмотров: {{ post.views }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
