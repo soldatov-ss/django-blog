@@ -21,7 +21,8 @@ class PostAdmin(admin.ModelAdmin):
     search_fields = ('title',)
     list_filter = ('category', 'created_at')
     save_on_top = True
-    fields = ('title', 'category', 'content', 'photo', 'created_at')
-    # readonly_fields = ('created_at',)
+    fields = ('title', 'category', 'content', 'photo')
+
+
 admin.site.register(Post, PostAdmin)
 admin.site.register(Category)

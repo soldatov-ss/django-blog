@@ -28,3 +28,9 @@ def register(request):
 
 def add_post(request):
     pass
+
+def view_post(request):
+    pass
+
+def get_category(request):
+    pass

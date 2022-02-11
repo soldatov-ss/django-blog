@@ -39,24 +39,35 @@
     </div>
 </nav>
 
-<div class="container">
-    <div class="posts-list mt-4">
-        {% for post in posts %}
-        <div class="card mb-3">
-            {% if post.img %}
-            <img src="{{ post.photo.url }}" class="card-img-top" alt="...">
-            {% endif %}
-            <h5 class="card-header px-5 p-3">{{ post.title }}</h5>
-            <div class="card-body">
-                <p class="card-text">{{ post.content|safe|linebreaks|truncatewords:50 }}</p>
+<div class="container mt-5 position-relative">
+    <div class="row">
+
+        {% include 'blog/_sidebar.html' %}
+        {% block sidebar %}{% endblock %}
+
+
+        <div class="posts-list  col-8">
+            {% for post in posts %}
+            <div class="card mb-3">
+                {% if post.img %}
+                <img src="{{ post.photo.url }}" class="card-img-top" alt="...">
+                {% endif %}
+                <h5 class="card-header px-5 p-3">
+                    <a href="{{ post.get_absolute_url }}" style="text-decoration: none; color:black">
+                        {{ post.title }}</a>
+                </h5>
+                <div class="card-body">
+                    <p class="card-text">{{ post.content|safe|linebreaks|truncatewords:50 }}</p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">{{ post.created_at }}</small>
+                </div>
             </div>
-            <div class="card-footer">
-                <small class="text-muted">{{ post.created_at }}</small>
-            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
 </div>
+
 
 </body>
 </html>
