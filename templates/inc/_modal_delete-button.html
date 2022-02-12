@@ -1,0 +1,29 @@
+<form method="post" action="{% url 'delete_post' post.pk %}">
+    {% csrf_token %}
+    {{ form }}
+    <button type="button" class="btn btn-danger me-md-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Удалить
+    </button>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    {% csrf_token %}
+                    <p>Удалить пост: "{{ object }}"?</p>
+                    {{ form }}
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="submit" value="Confirm" class="btn btn-primary">Удалить</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>

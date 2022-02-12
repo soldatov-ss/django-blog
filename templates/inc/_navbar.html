@@ -8,9 +8,9 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item"><a class="nav-link" href="">Главная</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Главная</a></li>
                 {% if request.user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link" href="">Добавить пост</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'add_post' %}">Добавить пост</a></li>
                 {% endif %}
             </ul>
         </div>
@@ -20,7 +20,7 @@
             </span>
         {% else %}
         <span class="navbar-text">
-                <a href="">Login</a> | <a href="">Register</a>
+                <a href="">Login</a> | <a href="{% url 'register' %}">Register</a>
             </span>
         {% endif %}
     </div>

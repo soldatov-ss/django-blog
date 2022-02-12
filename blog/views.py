@@ -2,12 +2,14 @@ from django.db.models import F
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
-from django.views.generic import ListView, DetailView
-
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, UpdateView
+from django.views.generic.edit import DeleteView
+from blog.forms import NewPost
 from blog.models import Post, Category
 
 
-class HomePosts(ListView):
+class HomePostsView(ListView):
     '''
     def home(request):
         posts = Post.objects.all()
@@ -18,7 +20,7 @@ class HomePosts(ListView):
     context_object_name = 'posts'
 
 
-class ViewPost(DetailView):
+class PostView(DetailView):
     '''
     def view_post(request, post_id):
         post = get_object_or_404(Post, pk=post_id)
@@ -27,6 +29,7 @@ class ViewPost(DetailView):
     model = Post
     template_name = 'blog/view_post.html'
     context_object_name = 'post'
+    allow_empty = False
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -36,7 +39,20 @@ class ViewPost(DetailView):
         return context
 
 
-class PostsByCategory(ListView):
+
+class UpdatePostView(UpdateView):
+    model = Post
+    template_name = 'blog/update_post.html'
+    form_class = NewPost
+    success_url = reverse_lazy('home') # поправить
+
+
+class DeletePostView(DeleteView):
+    model = Post
+    success_url = reverse_lazy('home')
+
+
+class PostsByCategoryView(ListView):
     model = Category
     template_name = 'blog/home.html'
     context_object_name = 'categories'

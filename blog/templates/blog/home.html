@@ -1,4 +1,4 @@
-{% extends 'blog/base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
 <div class="posts-list">
@@ -7,7 +7,7 @@
         {% if post.img %}
         <img src="{{ post.photo.url }}" class="card-img-top">
         {% endif %}
-        <h5 class="card-header px-5 p-3">
+        <h5 class="card-header px-4 p-3">
             <a href="{{ post.get_absolute_url }}" style="text-decoration: none; color:black">
                 {{ post.title }}</a>
         </h5>

@@ -1,4 +1,4 @@
-{% extends 'blog/base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
 <div class="card">
@@ -18,16 +18,19 @@
                 <p class="card-text">{{ post.content|safe|linebreaks }}</p>
             </div>
         </div>
-
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <button type="button" class="btn btn-danger me-md-2">Удалить</button>
-            <button type="button" class="btn btn-secondary">Изменить</button>
+            {% include 'inc/_modal_delete-button.html' %}
+
+            <a href="{% url 'update_post' post.pk %}">
+                <button type="button" class="btn btn-secondary">Изменить</button>
+            </a>
+
         </div>
     </div>
     <div class="card-footer text-muted d-flex justify-content-between">
-            {{ post.created_at|date:"Y-m-d H:i" }}
-            <p class="fst-italic">Кол-просмотров: {{ post.views }}</p>
-        </div>
+        {{ post.created_at|date:"Y-m-d H:i" }}
+        <div class="fst-italic">Кол-просмотров: {{ post.views }}</div>
     </div>
 </div>
+
 {% endblock %}
