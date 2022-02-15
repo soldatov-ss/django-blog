@@ -16,11 +16,11 @@
         </div>
         {% if request.user.is_authenticated %}
         <span class="navbar-text">
-                Добро пожаловать, {{ user.username }} | <a href="">Выход</a>
+                Добро пожаловать, {{ user.username }} | <a href="{% url 'user_logout' %}">Выход</a>
             </span>
         {% else %}
         <span class="navbar-text">
-                <a href="">Login</a> | <a href="{% url 'register' %}">Register</a>
+                <a href="{% url 'user_login' %}">Login</a> | <a href="{% url 'register' %}">Register</a>
             </span>
         {% endif %}
     </div>

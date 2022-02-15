@@ -1,32 +1,26 @@
+from django.contrib.auth import login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView
 from django.db.models import F
-from django.shortcuts import render, get_object_or_404, redirect
-
-# Create your views here.
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, UpdateView, CreateView
 from django.views.generic.edit import DeleteView
-from blog.forms import NewPost
+
+from blog.forms import NewPost, UserRegisterForm, UserLoginForm
 from blog.models import Post, Category
 
 
 class HomePostsView(ListView):
-    '''
-    def home(request):
-        posts = Post.objects.all()
-        return render(request, 'blog/home.html', {'posts': posts})
-    '''
     model = Post
     template_name = 'blog/home.html'
     context_object_name = 'posts'
 
+    def get_queryset(self):
+        return Post.objects.order_by('-created_at').select_related('category')
 
 
 class PostView(DetailView):
-    '''
-    def view_post(request, post_id):
-        post = get_object_or_404(Post, pk=post_id)
-        return render(request, 'blog/view_post.html', {'post': post})
-    '''
     model = Post
     template_name = 'blog/view_post.html'
     context_object_name = 'post'
@@ -36,27 +30,27 @@ class PostView(DetailView):
         context = super().get_context_data(**kwargs)
         self.object.views = F('views') + 1
         self.object.save()
-        self.object.refresh_from_db() # Чтобы выводилось корректное кол-во просмотров
+        self.object.refresh_from_db()  # Чтобы выводилось корректное кол-во просмотров
         return context
 
 
-
-class UpdatePostView(UpdateView):
+class UpdatePostView(LoginRequiredMixin, UpdateView):
     model = Post
     template_name = 'blog/update_post.html'
     form_class = NewPost
-    success_url = reverse_lazy('home') # поправить
+    raise_exception = True
 
 
-class DeletePostView(DeleteView):
+class DeletePostView(LoginRequiredMixin, DeleteView):
     model = Post
     success_url = reverse_lazy('home')
+    raise_exception = True
 
 
-class CreatePostView(CreateView):
+class CreatePostView(LoginRequiredMixin, CreateView):
     form_class = NewPost
     template_name = 'blog/add_post.html'
-
+    raise_exception = True
 
 
 class PostsByCategoryView(ListView):
@@ -72,17 +66,48 @@ class PostsByCategoryView(ListView):
     def get_queryset(self):
         return Post.objects.filter(category_id=self.kwargs['category_id']).select_related('category')
 
-def login(request):
-    pass
+
+class LoginUserView(LoginView):
+    authentication_form = UserLoginForm
+    next_page = 'home'
 
 
-def register(request):
-    pass
+class RegisterUserView(CreateView):
+    form_class = UserRegisterForm
+    template_name = 'blog/register.html'
+    success_url = reverse_lazy('login')
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('home')
 
 
-def add_post(request):
-    pass
+def user_logout(request):
+    logout(request)
+    return redirect('home')
 
+# def register(request):
+#     if request.method == 'POST':
+#         form = UserRegisterForm()
+#         if form.is_valid():
+#             user = form.save()
+#             login(request, user)
+#             messages.success(request, 'Вы успешно зарегестрировались')
+#             return redirect('home')
+#         else:
+#             messages.error(request, 'Ошибка регистрации')
+#     else:
+#         form = UserRegisterForm()
+#     return render(request, 'blog/register.html', {'form': form})
 
-def get_category(request):
-    pass
+# def user_login(request):
+#     if request.method == 'POST':
+#         form = UserLoginForm(data=request.POST)
+#         if form.is_valid():
+#             user = form.get_user()
+#             login(request, user)
+#             return redirect('home')
+#     else:
+#         form = UserLoginForm()
+#     return render(request, 'blog/login.html', {'form': form})
