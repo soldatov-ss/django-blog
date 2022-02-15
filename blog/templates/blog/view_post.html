@@ -9,9 +9,8 @@
     </div>
     <div class="card-body">
         <div class="media">
-            {% if news.photo %}
-            <img src="{{ post.photo.url }}" alt="" width="350" class="mr-3">
-
+            {% if post.photo %}
+            <img src="{{ post.photo.url }}" width="350" class="mr-3">
             {% endif %}
             <div class="media-body">
                 <h5 class="card-title">{{ post.title }}</h5>
