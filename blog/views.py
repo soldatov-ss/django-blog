@@ -60,10 +60,17 @@ class CreatePostView(CreateView):
 
 
 class PostsByCategoryView(ListView):
-    model = Category
-    template_name = 'blog/home.html'
-    context_object_name = 'categories'
+    model = Post
+    template_name = 'blog/home_category_list.html'
+    context_object_name = 'posts'
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()
+        context['title'] = str(Category.objects.get(pk=self.kwargs['category_id'])).title()
+        return context
+
+    def get_queryset(self):
+        return Post.objects.filter(category_id=self.kwargs['category_id']).select_related('category')
 
 def login(request):
     pass
