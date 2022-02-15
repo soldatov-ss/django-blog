@@ -4,18 +4,19 @@
 {% endblock %}
 {% block content %}
 <div class="card">
-    <div class="card-header px-4 p-3 ">
+    <div class="card-header px-4">
         Категория: <a href="{{ post.category.get_absolute_url }}"
-                      style="text-decoration: none; color:black; font-weight: bold">
+                      style="text-decoration: none;">
         {{ post.category }}</a>
     </div>
     <div class="card-body">
+        <h5 class="card-title p-3" >{{ post.title }}</h5>
         <div class="media">
             {% if post.photo %}
             <img src="{{ post.photo.url }}" width="100%" class="mr-3">
             {% endif %}
             <div class="media-body">
-                <h5 class="card-title">{{ post.title }}</h5>
+
                 <p class="card-text">{{ post.content|safe|linebreaks }}</p>
             </div>
         </div>
